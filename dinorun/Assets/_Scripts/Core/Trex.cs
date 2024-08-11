@@ -4,28 +4,17 @@ namespace Rubickanov.Dino.Core
 {
     public class Trex
     {
-        private float initPosY;
-        public float currentPosY;
-        private float maxPosY;
-
-        private float jumpMultiplier = 8f;
-        private float gravityMultiplier = 6f;
+        private float currentPosY = 0;
+        private float jumpTimer = 0f;
+        private TrexConfig config;
+        private State state;
 
         public bool wantToJump;
-        public bool shouldFall;
         public bool jumpReleased;
-
-        private float maxJumpTime = 0.5f;
-        private float minJumpTime = 0.2f;
-        public float jumpTimer = 0f;
-
-        public State state;
-
-        public Trex()
+        public float CurrentPosY => currentPosY;
+        public Trex(TrexConfig config)
         {
-            initPosY = 0;
-            currentPosY = initPosY;
-            maxPosY = 1.5f;
+            this.config = config;
         }
 
         public void Start()
@@ -76,43 +65,31 @@ namespace Rubickanov.Dino.Core
         {
             jumpTimer += deltaTime;
 
-            if (jumpTimer >= maxJumpTime || !wantToJump && jumpTimer >= minJumpTime)
+            if (jumpTimer >= config.maxJumpTime || !wantToJump && jumpTimer >= config.minJumpTime)
             {
                 state = State.FALLING;
             }
 
-            if (currentPosY <= maxPosY)
+            if (currentPosY <= config.maxPosY)
             {
-                currentPosY += jumpMultiplier * deltaTime;
+                currentPosY += config.jumpMultiplier * deltaTime;
             }
         }
 
         private void HandleFalling(float deltaTime)
         {
-            if (currentPosY > initPosY)
+            if (currentPosY > config.initPosY)
             {
-                currentPosY -= gravityMultiplier * deltaTime;
+                currentPosY -= config.gravityMultiplier * deltaTime;
             }
 
-            if (currentPosY <= initPosY)
+            if (currentPosY <= config.initPosY)
             {
-                currentPosY = initPosY;
+                currentPosY = config.initPosY;
                 jumpTimer = 0;
 
                 state = State.RUNNING;
             }
         }
-    }
-
-    public struct Vector2
-    {
-        public Vector2(float x = 0, float y = 0)
-        {
-            X = x;
-            Y = y;
-        }
-
-        public float X;
-        public float Y;
     }
 }
