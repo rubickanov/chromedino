@@ -4,17 +4,31 @@ namespace Rubickanov.Dino.Core
 {
     public class Trex
     {
+        public float height;
+        public float width;
+
         private float currentPosY = 0;
         private float jumpTimer = 0f;
         private TrexConfig config;
-        private State state;
+        private State state = State.IDLE;
+        private State lastState;
 
         public bool wantToJump;
         public bool jumpReleased;
+        public bool wantToDuck;
         public float CurrentPosY => currentPosY;
+
+        public event Action OnDuck;
+
+        public event Action OnJump;
+        public event Action OnDead;
+        public event Action OnRun;
+
         public Trex(TrexConfig config)
         {
             this.config = config;
+            height = config.height;
+            width = config.width;
         }
 
         public void Start()
@@ -24,11 +38,12 @@ namespace Rubickanov.Dino.Core
 
         public enum State
         {
-            //IDLE,
+            IDLE,
             RUNNING,
+            DUCK,
             JUMPING,
             FALLING,
-            //DEAD
+            DEAD
         }
 
         public void Update(float deltaTime)
@@ -38,31 +53,80 @@ namespace Rubickanov.Dino.Core
                 case State.RUNNING:
                     HandleRunning();
                     break;
-                
+
                 case State.JUMPING:
                     HandleJump(deltaTime);
                     break;
-                
+
                 case State.FALLING:
                     HandleFalling(deltaTime);
                     break;
-                
+
+                case State.DEAD:
+                    break;
+
+                case State.IDLE:
+                    break;
+
+                case State.DUCK:
+                    HandleDuck();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
+        private void HandleDuck()
+        {
+            if (lastState != State.DUCK)
+            {
+                OnDuck?.Invoke();
+                lastState = State.DUCK;
+                height = config.duckHeight;
+            }
+
+            if (wantToJump && jumpReleased)
+            {
+                state = State.JUMPING;
+                jumpReleased = false;
+                height = config.height;
+            }
+
+            if (!wantToDuck)
+            {
+                state = State.RUNNING;
+                height = config.height;
+            }
+        }
+
         private void HandleRunning()
         {
+            if (lastState != State.RUNNING)
+            {
+                OnRun?.Invoke();
+                lastState = State.RUNNING;
+            }
+
             if (wantToJump && jumpReleased)
             {
                 state = State.JUMPING;
                 jumpReleased = false;
             }
+
+            if (wantToDuck)
+            {
+                state = State.DUCK;
+            }
         }
 
         private void HandleJump(float deltaTime)
         {
+            if (lastState != State.JUMPING)
+            {
+                OnJump?.Invoke();
+                lastState = State.JUMPING;
+            }
+
             jumpTimer += deltaTime;
 
             if (jumpTimer >= config.maxJumpTime || !wantToJump && jumpTimer >= config.minJumpTime)
@@ -90,6 +154,12 @@ namespace Rubickanov.Dino.Core
 
                 state = State.RUNNING;
             }
+        }
+
+        public void Die()
+        {
+            state = State.DEAD;
+            OnDead?.Invoke();
         }
     }
 }

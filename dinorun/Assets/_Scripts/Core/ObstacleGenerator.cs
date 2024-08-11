@@ -6,21 +6,14 @@ using Random = System.Random;
 
 public class ObstacleGenerator
 {
-    public enum Obstacles
-    {
-        LargeCactus,
-        SmallCactus,
-        TwoLargeCactus
-    }
-    
     private Game game;
     private GeneratorConfig config;
 
     private float timeSinceLastObstacle = 0f;
     private float timeToNextObstacle = 0f;
-    
+
     private Random random = new Random();
-    
+
     public List<Obstacle> CurrentObstacles { get; private set; } = new List<Obstacle>();
     public Action<Obstacle> OnObstacleGenerated;
 
@@ -28,12 +21,11 @@ public class ObstacleGenerator
     {
         GenerateObstacle();
     }
-    
+
     public ObstacleGenerator(Game game, GeneratorConfig config)
     {
         this.game = game;
         this.config = config;
-        //this.obstacleConfigs = obstacleConfigs;
         timeToNextObstacle = GetRandomTimeToNextObstacle();
     }
 
@@ -47,47 +39,63 @@ public class ObstacleGenerator
             timeSinceLastObstacle = 0f;
             timeToNextObstacle = GetRandomTimeToNextObstacle();
         }
+
         for (int i = CurrentObstacles.Count - 1; i >= 0; i--)
         {
-            CurrentObstacles[i].posX -= game.GameSpeed * deltaTime * config.speedMultiplier;
-            if (CurrentObstacles[i].posX + CurrentObstacles[i].config.width < 0)
+            CurrentObstacles[i].posX -= game.GameSpeed * deltaTime;
+            if (CurrentObstacles[i].posX < config.despawnPosX)
             {
-               // CurrentObstacles.RemoveAt(i);
+                CurrentObstacles[i].Destroy();
+                CurrentObstacles.RemoveAt(i);
             }
         }
     }
 
     private float GetRandomTimeToNextObstacle()
     {
-        return (float)random.NextDouble() * (config.maxTimeBetweenObstacles - config.minTimeBetweenObstacles) +
-               config.minTimeBetweenObstacles;
+        float time = (float)random.NextDouble() * (config.maxTimeBetweenObstacles - config.minTimeBetweenObstacles) +
+                     config.minTimeBetweenObstacles;
+
+        time -= game.GameSpeed * config.timeDecreaseFactor;
+
+        time = Math.Max(time, 0.75f);
+
+        return time;
     }
 
     private void GenerateObstacle()
     {
-        Array obstacleValues = Enum.GetValues(typeof(Obstacles));
+        Array obstacleValues = Enum.GetValues(typeof(ObstacleType));
 
-        Obstacles randomObstacle = (Obstacles)obstacleValues.GetValue(random.Next(obstacleValues.Length));
-
-        Obstacle newObstacle;
-        switch (randomObstacle)
+        ObstacleType randomObstacleType = (ObstacleType)obstacleValues.GetValue(random.Next(obstacleValues.Length));
+        Obstacle newObstacle = randomObstacleType switch
         {
-            case Obstacles.LargeCactus:
-                newObstacle = new LargeCactus(config.largeCactusConfig);
-                break;
-            case Obstacles.SmallCactus:
-                newObstacle = new SmallCactus(config.smallCactusConfig);
-                break;
-            case Obstacles.TwoLargeCactus:
-                newObstacle = new TwoLargeCactus(config.twoLargeCactusConfig);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
+            ObstacleType.LargeCactus => new Obstacle(config.largeCactusConfig, ObstacleType.LargeCactus),
+            ObstacleType.SmallCactus => new Obstacle(config.smallCactusConfig, ObstacleType.SmallCactus),
+            ObstacleType.TwoLargeCactus => new Obstacle(config.twoLargeCactusConfig, ObstacleType.TwoLargeCactus),
+            ObstacleType.TwoSmallCactus => new Obstacle(config.twoSmallCactusConfig, ObstacleType.TwoSmallCactus),
+            ObstacleType.ThreeSmallCactus => new Obstacle(config.threeSmallCactusConfig, ObstacleType.ThreeSmallCactus),
+            ObstacleType.MixCactus => new Obstacle(config.threeSmallCactusConfig, ObstacleType.MixCactus),
+            ObstacleType.Bird => new Obstacle(config.birdConfig, ObstacleType.Bird),
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        if (newObstacle.type == ObstacleType.Bird)
+        {
+            newObstacle.posY = newObstacle.GetRandomYPos();
         }
 
         newObstacle.posX = config.spawnPosX;
         CurrentObstacles.Add(newObstacle);
-        
+
         OnObstacleGenerated?.Invoke(newObstacle);
+    }
+
+    public void Reset()
+    {
+        foreach (var obstacle in CurrentObstacles)
+        {
+            obstacle.Destroy();
+        }
     }
 }

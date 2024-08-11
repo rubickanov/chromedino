@@ -1,6 +1,8 @@
+using System;
 using System.Drawing;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Action = System.Action;
 
 namespace Rubickanov.Dino.Core
 {
@@ -8,20 +10,24 @@ namespace Rubickanov.Dino.Core
     {
         public Trex Trex;
         public ObstacleGenerator ObstacleGenerator;
+        public Score Score;
 
-        private int currentSpeedIndex = 0;
-        public float GameSpeed => config.isSlowMode
-            ? config.slowGameSpeeds[currentSpeedIndex]
-            : config.normalGameSpeeds[currentSpeedIndex];
+        public float GameSpeed;
 
+        public bool IsGameStarted = false;
+        private bool isGameRunning = false;
+        public bool IsGameRunning => isGameRunning;
 
         private GameConfig config;
+        
+        public event Action OnGameOver;
 
         public Game(GameConfig config)
         {
             this.config = config;
             ObstacleGenerator = new ObstacleGenerator(this, config.generatorConfig);
             Trex = new Trex(config.trexConfig);
+            Score = new Score(config.scoreConfig);
         }
 
         public void Start()
@@ -29,31 +35,35 @@ namespace Rubickanov.Dino.Core
             OnJumpReleased(); // HOTFIX
             Trex.Start();
             ObstacleGenerator.Start();
+            isGameRunning = true;
+            IsGameStarted = true;
+            GameSpeed = config.startGameSpeed;
         }
 
         public void Update(float deltaTime)
         {
+            if (!isGameRunning) return;
+            
+            GameSpeed += config.gameSpeedMultiplier * deltaTime;
+            
             ObstacleGenerator.Update(deltaTime);
             Trex.Update(deltaTime);
+            Score.Update(deltaTime, GameSpeed);
             if (BetterCheckCollision())
             {
-                SceneManager.LoadScene(0);
+                GameOver();
             }
-        }
-
-        public void NextSpeed()
-        {
         }
 
         public bool BetterCheckCollision()
         {
             foreach (var Obstacle in ObstacleGenerator.CurrentObstacles)
             {
-                if (Obstacle.posX <= config.trexConfig.initPosX + config.trexConfig.width &&
+                if (Obstacle.posX <= config.trexConfig.initPosX + Trex.width &&
                     Obstacle.posX + Obstacle.config.width >= config.trexConfig.initPosX &&
-                    Trex.CurrentPosY <= Obstacle.config.height)
+                    Trex.CurrentPosY <= Obstacle.config.height + Obstacle.posY &&
+                    Trex.CurrentPosY + Trex.height >= Obstacle.posY)
                 {
-                    Debug.Log("DEAD");
                     return true;
                 }
             }
@@ -99,6 +109,24 @@ namespace Rubickanov.Dino.Core
         public float GetTrexPosY()
         {
             return Trex.CurrentPosY;
+        }
+
+        public void GameOver()
+        {
+            isGameRunning = false;
+            OnGameOver?.Invoke();
+            Trex.Die();
+            Score.CheckBestScore();
+        }
+
+        public void OnDuck()
+        {
+            Trex.wantToDuck = true;
+        }
+
+        public void OnDuckReleased()
+        {
+            Trex.wantToDuck = false;
         }
     }
 }

@@ -5,11 +5,11 @@ namespace Rubickanov.Dino.Core
     [Serializable]
     public struct GameConfig
     {
-        public bool isSlowMode;
-        public float[] slowGameSpeeds;
-        public float[] normalGameSpeeds;
+        public float startGameSpeed;
+        public float gameSpeedMultiplier;
         public TrexConfig trexConfig;
         public GeneratorConfig generatorConfig;
+        public ScoreConfig scoreConfig;
     }
     
     [Serializable]
@@ -17,6 +17,7 @@ namespace Rubickanov.Dino.Core
     {
         public float width;
         public float height;
+        public float duckHeight;
         public float initPosX;
         public float initPosY;
         public float maxPosY;
@@ -29,6 +30,7 @@ namespace Rubickanov.Dino.Core
     [Serializable]
     public struct ObstacleConfig
     {
+        public float yPos;
         public float width;
         public float height;
     }
@@ -36,13 +38,23 @@ namespace Rubickanov.Dino.Core
     [Serializable]
     public struct GeneratorConfig
     {
-        public float speedMultiplier; // Didn't want to add this but its the only way to sync ground and obstacles speed
         public float spawnPosX;
         public float despawnPosX;
+        public float timeDecreaseFactor;
         public float minTimeBetweenObstacles;
         public float maxTimeBetweenObstacles;
         public ObstacleConfig smallCactusConfig;
         public ObstacleConfig largeCactusConfig;
         public ObstacleConfig twoLargeCactusConfig;
+        public ObstacleConfig twoSmallCactusConfig;
+        public ObstacleConfig threeSmallCactusConfig;
+        public ObstacleConfig mixCactusConfig;
+        public ObstacleConfig birdConfig;
+    }
+
+    [Serializable]
+    public struct ScoreConfig
+    {
+        public int scoreMultiplier;
     }
 }
