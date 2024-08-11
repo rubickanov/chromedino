@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Rubickanov.Dino.Core;
-using UnityEngine;
 using Random = System.Random;
 
 public class ObstacleGenerator
@@ -42,8 +41,8 @@ public class ObstacleGenerator
 
         for (int i = CurrentObstacles.Count - 1; i >= 0; i--)
         {
-            CurrentObstacles[i].posX -= game.GameSpeed * deltaTime;
-            if (CurrentObstacles[i].posX < config.despawnPosX)
+            CurrentObstacles[i].PosX -= game.GameSpeed * deltaTime;
+            if (CurrentObstacles[i].PosX < config.despawnPosX)
             {
                 CurrentObstacles[i].Destroy();
                 CurrentObstacles.RemoveAt(i);
@@ -82,10 +81,10 @@ public class ObstacleGenerator
 
         if (newObstacle.type == ObstacleType.Bird)
         {
-            newObstacle.posY = newObstacle.GetRandomYPos();
+            newObstacle.PosY = newObstacle.GetRandomYPos();
         }
 
-        newObstacle.posX = config.spawnPosX;
+        newObstacle.PosX = config.spawnPosX;
         CurrentObstacles.Add(newObstacle);
 
         OnObstacleGenerated?.Invoke(newObstacle);

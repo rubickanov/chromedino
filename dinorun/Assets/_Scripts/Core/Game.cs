@@ -1,7 +1,4 @@
-using System;
 using System.Drawing;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using Action = System.Action;
 
 namespace Rubickanov.Dino.Core
@@ -49,20 +46,20 @@ namespace Rubickanov.Dino.Core
             ObstacleGenerator.Update(deltaTime);
             Trex.Update(deltaTime);
             Score.Update(deltaTime, GameSpeed);
-            if (BetterCheckCollision())
+            if (CheckCollision())
             {
                 GameOver();
             }
         }
 
-        public bool BetterCheckCollision()
+        public bool CheckCollision()
         {
             foreach (var Obstacle in ObstacleGenerator.CurrentObstacles)
             {
-                if (Obstacle.posX <= config.trexConfig.initPosX + Trex.width &&
-                    Obstacle.posX + Obstacle.config.width >= config.trexConfig.initPosX &&
-                    Trex.CurrentPosY <= Obstacle.config.height + Obstacle.posY &&
-                    Trex.CurrentPosY + Trex.height >= Obstacle.posY)
+                if (Obstacle.PosX <= config.trexConfig.initPosX + Trex.width &&
+                    Obstacle.PosX + Obstacle.config.width >= config.trexConfig.initPosX &&
+                    Trex.CurrentPosY <= Obstacle.config.height + Obstacle.PosY &&
+                    Trex.CurrentPosY + Trex.height >= Obstacle.PosY)
                 {
                     return true;
                 }
@@ -71,29 +68,29 @@ namespace Rubickanov.Dino.Core
             return false;
         }
 
-        public bool CheckCollision()
-        {
-            float trexPosX = config.trexConfig.initPosX;
-            float trexPosY = Trex.CurrentPosY;
-
-            RectangleF trexRect = new RectangleF(trexPosX, trexPosY, config.trexConfig.width, config.trexConfig.height);
-
-            foreach (Obstacle obstacle in ObstacleGenerator.CurrentObstacles)
-            {
-                float obstaclePosX = obstacle.posX;
-                float obstaclePosY = 0; // HARDCODE
-
-                RectangleF obstacleRect = new RectangleF(obstaclePosX, obstaclePosY, obstacle.config.width,
-                    obstacle.config.height);
-
-                if (trexRect.IntersectsWith(obstacleRect))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        // public bool CheckCollision()
+        // {
+        //     float trexPosX = config.trexConfig.initPosX;
+        //     float trexPosY = Trex.CurrentPosY;
+        //
+        //     RectangleF trexRect = new RectangleF(trexPosX, trexPosY, config.trexConfig.width, config.trexConfig.height);
+        //
+        //     foreach (Obstacle obstacle in ObstacleGenerator.CurrentObstacles)
+        //     {
+        //         float obstaclePosX = obstacle.PosX;
+        //         float obstaclePosY = 0; // HARDCODE
+        //
+        //         RectangleF obstacleRect = new RectangleF(obstaclePosX, obstaclePosY, obstacle.config.width,
+        //             obstacle.config.height);
+        //
+        //         if (trexRect.IntersectsWith(obstacleRect))
+        //         {
+        //             return true;
+        //         }
+        //     }
+        //
+        //     return false;
+        // }
 
         public void OnJump()
         {

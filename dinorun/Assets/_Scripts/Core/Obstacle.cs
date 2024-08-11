@@ -9,7 +9,7 @@ namespace Rubickanov.Dino.Core
         private float _posX;
         private float _posY;
 
-        public float posX
+        public float PosX
         {
             get => _posX;
             set
@@ -19,7 +19,7 @@ namespace Rubickanov.Dino.Core
             }
         }
 
-        public float posY
+        public float PosY
         {
             get => _posY;
             set => _posY = value;

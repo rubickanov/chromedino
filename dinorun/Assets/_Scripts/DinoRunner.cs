@@ -56,7 +56,7 @@ public class DinoRunner : MonoBehaviour
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        GameObject obstacleInstance = Instantiate(obstaclePrefab, new Vector3(10, obstacle.posY, 0), Quaternion.identity);
+        GameObject obstacleInstance = Instantiate(obstaclePrefab, new Vector3(10, obstacle.PosY, 0), Quaternion.identity);
         obstacle.OnPositionChanged += () => UpdateObstaclePosition(obstacle, obstacleInstance);
         obstacle.OnDestroyed += () => DestroyObstacle(obstacle, obstacleInstance);
     }
@@ -70,7 +70,7 @@ public class DinoRunner : MonoBehaviour
     private void UpdateObstaclePosition(Obstacle obstacle, GameObject obstacleInstance)
     {
         if (obstacle == null || obstacleInstance == null) return;
-        obstacleInstance.transform.position = new Vector3(obstacle.posX, obstacle.posY, 0);
+        obstacleInstance.transform.position = new Vector3(obstacle.PosX, obstacle.PosY, 0);
     }
 
     private void StartGame()
@@ -81,7 +81,6 @@ public class DinoRunner : MonoBehaviour
             return;
         }
 
-        //Play Start game animation
         Game.Start();
         startGameUI.SetActive(false);
         startGameAnim.gameObject.SetActive(false);
