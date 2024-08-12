@@ -1,4 +1,8 @@
-# Копия игры Chrome Dino от Google.
+# Копия игры Chrome Dino от Google
+
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/rubickanov/chromedino/blob/main/README-ENG.md)
+
+**Версия движка 2022.3.39f1**
 
 ## Задачи
 У меня была задача сделать игру-копию Chrome Dino. Я хотел попробовать сделать архитектуру не типичную для моих проектов. Первую похожую реализацию я увидел на канале [Life.EXE](https://www.youtube.com/watch?v=LgXplbMGR3c&list=PL2XQZYeh2Hh-1p7TqtOJhU-fiBXg_VaNX&index=2).
@@ -213,6 +217,7 @@ public void Update(float deltaTime)
 - [ ] Single Responsobility
 - [ ] Логику прыжков
 - [ ] Логику проверки столкновений
-- [ ] Добавить рестарт, не используя SceneManager.LoadScene()
+- [ ] Добавить рестарт, не используя `SceneManager.LoadScene()`
+- [ ] Убрать `UnityEngine.Mathf` из `Score`
 
 [^1]: **Так как проект не слишком сложный, мне кажется, будет легче рассмотреть как я реализовал каждый аспект игры, а не разбирать каждый класс отдельно. Это НЕ техническая документация, а мой рассказ о том, как я сделал этот проект. Сами скрипты небольшие и простые для понимания**
