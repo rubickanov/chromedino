@@ -33,7 +33,7 @@ namespace Rubickanov.Dino.Core
 
         public void Start()
         {
-            state = State.RUNNING;
+            //state = State.JUMPING;
         }
 
         public enum State
@@ -154,6 +154,11 @@ namespace Rubickanov.Dino.Core
 
                 state = State.RUNNING;
             }
+        }
+        
+        public void ForceJump()
+        {
+            state = State.JUMPING;
         }
 
         public void Die()

@@ -26,9 +26,13 @@ namespace Rubickanov.Dino.Core
             Score = new Score(config.scoreConfig);
         }
 
+        public void PreStart()
+        {
+            Trex.ForceJump();
+        }
+
         public void Start()
         {
-            OnJumpReleased(); // HOTFIX
             Trex.Start();
             ObstacleGenerator.Start();
             isGameRunning = true;
@@ -38,12 +42,12 @@ namespace Rubickanov.Dino.Core
 
         public void Update(float deltaTime)
         {
+            Trex.Update(deltaTime);
             if (!isGameRunning) return;
             
             GameSpeed += config.gameSpeedMultiplier * deltaTime;
             
             ObstacleGenerator.Update(deltaTime);
-            Trex.Update(deltaTime);
             Score.Update(deltaTime, GameSpeed);
             if (CheckCollision())
             {

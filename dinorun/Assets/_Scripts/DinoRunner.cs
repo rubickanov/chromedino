@@ -115,6 +115,7 @@ public class DinoRunner : MonoBehaviour
         {
             startGameAnim.Play();
             //StartGame();
+            Game.PreStart();
         }
         
         if(isGameOver && (Input.GetKeyDown(KeyCode.W) || Input.GetMouseButton(0)))
