@@ -1,4 +1,4 @@
-# Копия игры Chrome Dino от Google.
+# Копия игры Chrome Dino от Google
 
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/rubickanov/chromedino/blob/main/README-ENG.md)
 
