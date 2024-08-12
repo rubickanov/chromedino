@@ -11,10 +11,10 @@ namespace Rubickanov.Dino.Core
         public float GameSpeed;
 
         public bool IsGameStarted = false;
-        private bool isGameRunning = false;
+        public bool isGameRunning = false;
         public bool IsGameRunning => isGameRunning;
 
-        private GameConfig config;
+        public GameConfig config;
         
         public event Action OnGameOver;
 
@@ -28,7 +28,7 @@ namespace Rubickanov.Dino.Core
 
         public void PreStart()
         {
-            Trex.ForceJump();
+            Trex.Start();
         }
 
         public void Start()
