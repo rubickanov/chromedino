@@ -1,5 +1,7 @@
 # Копия игры Chrome Dino от Google.
 
+**Версия движка 2022.3.39f1**
+
 ## Задачи
 У меня была задача сделать игру-копию Chrome Dino. Я хотел попробовать сделать архитектуру не типичную для моих проектов. Первую похожую реализацию я увидел на канале [Life.EXE](https://www.youtube.com/watch?v=LgXplbMGR3c&list=PL2XQZYeh2Hh-1p7TqtOJhU-fiBXg_VaNX&index=2).
 
