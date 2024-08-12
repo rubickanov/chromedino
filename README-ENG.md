@@ -215,11 +215,5 @@ Two scripts, `DinoAnimatedSprite` and `AnimatedSprite`, were also "inspired" ðŸ‘
 
 `StartGameAnim` is for playing the start game animation.
 
-## What Can Be Improved
-
-- [ ] Single Responsibility
-- [ ] Jump logic
-- [ ] Collision detection logic
-- [ ] Add restart without using SceneManager.LoadScene()
 
 [^1]: **Since the project is not too complex, I think it would be easier to review how I implemented each aspect of the game rather than dissecting each class separately. This is NOT a technical document, but my story of how I created this project. The scripts themselves are small and easy to understand.**
