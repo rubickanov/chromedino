@@ -1,5 +1,7 @@
 # Копия игры Chrome Dino от Google.
 
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/rubickanov/chromedino/blob/main/README-ENG.md)
+
 **Версия движка 2022.3.39f1**
 
 ## Задачи
