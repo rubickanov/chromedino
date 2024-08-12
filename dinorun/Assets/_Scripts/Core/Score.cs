@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 namespace Rubickanov.Dino.Core
 {
@@ -24,7 +23,7 @@ namespace Rubickanov.Dino.Core
             score += config.scoreMultiplier * gameSpeed * deltaTime;
             OnScoreChanged?.Invoke(score);
 
-            float currentScoreEvent = Mathf.Floor(score / 100);
+            float currentScoreEvent = (float)Math.Floor(score / 100);
             if (currentScoreEvent > lastScoreEvent)
             {
                 OnHundredScore?.Invoke();
