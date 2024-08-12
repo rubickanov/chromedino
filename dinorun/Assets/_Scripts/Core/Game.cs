@@ -1,5 +1,4 @@
-using System.Drawing;
-using Action = System.Action;
+using System;
 
 namespace Rubickanov.Dino.Core
 {

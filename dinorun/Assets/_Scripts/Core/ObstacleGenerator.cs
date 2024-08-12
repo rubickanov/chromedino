@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Rubickanov.Dino.Core;
-using Random = System.Random;
 
-public class ObstacleGenerator
+namespace Rubickanov.Dino.Core
+{
+    public class ObstacleGenerator
 {
     private Game game;
     private GeneratorConfig config;
@@ -97,4 +97,5 @@ public class ObstacleGenerator
             obstacle.Destroy();
         }
     }
+}
 }
