@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4379232798140030690}
   - component: {fileID: 5972191796802764713}
   - component: {fileID: 9197836482486585845}
+  - component: {fileID: 563982448909539314}
   m_Layer: 0
   m_Name: Bird
   m_TagString: Untagged
@@ -100,3 +101,17 @@ MonoBehaviour:
   sprites:
   - {fileID: 21300000, guid: ae216d0c3688dbf40b6ffef159fecb86, type: 3}
   - {fileID: 21300000, guid: 59ee8ace5feeaaf4c8d6ad03accc1cee, type: 3}
+--- !u!114 &563982448909539314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5067010798937636415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a6f933a902f4cbdaadb1d752604908d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dinoRunner: {fileID: 0}
+  obstacleType: 6

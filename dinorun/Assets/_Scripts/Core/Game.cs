@@ -61,8 +61,8 @@ namespace Rubickanov.Dino.Core
             {
                 if (Obstacle.PosX <= config.trexConfig.initPosX + Trex.width &&
                     Obstacle.PosX + Obstacle.config.width >= config.trexConfig.initPosX &&
-                    Trex.CurrentPosY <= Obstacle.config.height + Obstacle.PosY &&
-                    Trex.CurrentPosY + Trex.height >= Obstacle.PosY)
+                    Trex.CurrentPosY <= Obstacle.PosY + Obstacle.config.height / 2 &&
+                    Trex.CurrentPosY + Trex.height >= Obstacle.PosY - Obstacle.config.height / 2)
                 {
                     return true;
                 }
