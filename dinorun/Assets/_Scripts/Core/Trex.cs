@@ -161,5 +161,10 @@ namespace Rubickanov.Dino.Core
             state = State.DEAD;
             OnDead?.Invoke();
         }
+
+        public void Reset()
+        {
+            state = State.IDLE;
+        }
     }
 }

@@ -39,5 +39,11 @@ namespace Rubickanov.Dino.Core
                 OnHighScoreChanged?.Invoke(bestScore);
             }
         }
+
+        public void Reset()
+        {
+            score = 0;
+            lastScoreEvent = 0;
+        }
     }
 }

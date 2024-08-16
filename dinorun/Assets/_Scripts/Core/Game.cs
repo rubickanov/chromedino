@@ -33,7 +33,6 @@ namespace Rubickanov.Dino.Core
 
         public void Start()
         {
-            Trex.Start();
             ObstacleGenerator.Start();
             isGameRunning = true;
             IsGameStarted = true;
@@ -119,6 +118,15 @@ namespace Rubickanov.Dino.Core
             Score.CheckBestScore();
         }
 
+        public void Reset()
+        {
+            Trex.Reset();
+            ObstacleGenerator.Reset();
+            Score.Reset();
+            isGameRunning = false;
+            IsGameStarted = false;
+        }
+        
         public void OnDuck()
         {
             Trex.wantToDuck = true;
