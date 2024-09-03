@@ -21,7 +21,7 @@ namespace Rubickanov.Dino.Core
         public Game(GameConfig config)
         {
             this.config = config;
-            ObstacleGenerator = new ObstacleGenerator(this, config.generatorConfig);
+            ObstacleGenerator = new ObstacleGenerator(config.generatorConfig);
             Trex = new Trex(config.trexConfig);
             Score = new Score(config.scoreConfig);
         }
@@ -46,7 +46,7 @@ namespace Rubickanov.Dino.Core
             
             GameSpeed += config.gameSpeedMultiplier * deltaTime;
             
-            ObstacleGenerator.Update(deltaTime);
+            ObstacleGenerator.Update(GameSpeed, deltaTime);
             Score.Update(deltaTime, GameSpeed);
             if (CheckCollision())
             {

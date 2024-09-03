@@ -5,7 +5,6 @@ namespace Rubickanov.Dino.Core
 {
     public class ObstacleGenerator
     {
-        private Game game;
         private GeneratorConfig config;
 
         private float timeSinceLastObstacle = 0f;
@@ -21,14 +20,13 @@ namespace Rubickanov.Dino.Core
             GenerateObstacle();
         }
 
-        public ObstacleGenerator(Game game, GeneratorConfig config)
+        public ObstacleGenerator(GeneratorConfig config)
         {
-            this.game = game;
             this.config = config;
-            timeToNextObstacle = GetRandomTimeToNextObstacle();
+            timeToNextObstacle = GetRandomTimeToNextObstacle(0);
         }
 
-        public void Update(float deltaTime)
+        public void Update(float gameSpeed, float deltaTime)
         {
             timeSinceLastObstacle += deltaTime;
 
@@ -36,12 +34,12 @@ namespace Rubickanov.Dino.Core
             {
                 GenerateObstacle();
                 timeSinceLastObstacle = 0f;
-                timeToNextObstacle = GetRandomTimeToNextObstacle();
+                timeToNextObstacle = GetRandomTimeToNextObstacle(gameSpeed);
             }
 
             for (int i = CurrentObstacles.Count - 1; i >= 0; i--)
             {
-                CurrentObstacles[i].PosX -= game.GameSpeed * deltaTime;
+                CurrentObstacles[i].PosX -= gameSpeed * deltaTime;
                 if (CurrentObstacles[i].PosX < config.despawnPosX)
                 {
                     CurrentObstacles[i].Destroy();
@@ -50,15 +48,15 @@ namespace Rubickanov.Dino.Core
             }
         }
 
-        private float GetRandomTimeToNextObstacle()
+        private float GetRandomTimeToNextObstacle(float gameSpeed)
         {
             float time =
                 (float)random.NextDouble() * (config.maxTimeBetweenObstacles - config.minTimeBetweenObstacles) +
                 config.minTimeBetweenObstacles;
 
-            time -= game.GameSpeed * config.timeDecreaseFactor;
+            time -= gameSpeed * config.timeDecreaseFactor;
 
-            time = Math.Max(time, 0.75f);
+            time = Math.Max(time, 0.75f);  // TODO: remove clamp
 
             return time;
         }

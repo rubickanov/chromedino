@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class DinoRunner : MonoBehaviour
 {
     public static DinoRunner Instance { get; private set; }
-    
+
     public Game Game;
 
     [SerializeField] private MeshRenderer ground;
@@ -24,7 +24,7 @@ public class DinoRunner : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        
+
         gameOverUI.SetActive(false);
 
         Game = new Game(config);
@@ -35,6 +35,7 @@ public class DinoRunner : MonoBehaviour
 
         startGameAnim.OnAnimEnd += StartGame;
     }
+
     private void OnGameOver()
     {
         isGameOver = true;
@@ -56,7 +57,8 @@ public class DinoRunner : MonoBehaviour
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        GameObject obstacleInstance = Instantiate(obstaclePrefab, new Vector3(10, obstacle.PosY, 0), Quaternion.identity);
+        GameObject obstacleInstance =
+            Instantiate(obstaclePrefab, new Vector3(10, obstacle.PosY, 0), Quaternion.identity);
         obstacle.OnPositionChanged += () => UpdateObstaclePosition(obstacle, obstacleInstance);
         obstacle.OnDestroyed += () => DestroyObstacle(obstacle, obstacleInstance);
     }
@@ -89,10 +91,11 @@ public class DinoRunner : MonoBehaviour
     private void Update()
     {
         Game.Update(Time.deltaTime);
-        
-        MoveGround();
+
+
         ReadInput();
         PlayerVisualJump();
+        MoveGround(Time.deltaTime);
     }
 
     private void OnDrawGizmos()
@@ -117,8 +120,8 @@ public class DinoRunner : MonoBehaviour
             //StartGame();
             Game.PreStart();
         }
-        
-        if(isGameOver && (Input.GetKeyDown(KeyCode.W) || Input.GetMouseButton(0)))
+
+        if (isGameOver && (Input.GetKeyDown(KeyCode.W) || Input.GetMouseButton(0)))
         {
             SceneManager.LoadScene(0);
         }
@@ -137,18 +140,18 @@ public class DinoRunner : MonoBehaviour
         {
             Game.OnDuck();
         }
-        
+
         if (Input.GetKeyUp(KeyCode.S))
         {
             Game.OnDuckReleased();
         }
     }
 
-    private void MoveGround()
+    private void MoveGround(float deltaTime)
     {
-        if(isGameOver) return;
+        if (isGameOver) return;
         float speed = Game.GameSpeed / ground.transform.localScale.x;
-        ground.material.mainTextureOffset += new Vector2(speed * Time.deltaTime, 0);
+        ground.material.mainTextureOffset += new Vector2(speed * deltaTime, 0);
     }
 
     private void PlayerVisualJump()
